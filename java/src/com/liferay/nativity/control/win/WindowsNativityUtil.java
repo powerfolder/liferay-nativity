@@ -16,6 +16,8 @@ package com.liferay.nativity.control.win;
 
 import com.liferay.nativity.util.OSDetector;
 
+import de.dal33t.powerfolder.util.os.OSUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,20 +56,10 @@ public class WindowsNativityUtil {
 
 			return;
 		}
-
 		_logger.trace("Loading WindowsNativityUtil DLL");
 
-		String nativityDllName = _NATIVITY_DLL_NAME;
-
-		if (System.getenv("ProgramFiles(x86)") != null) {
-			nativityDllName = nativityDllName + "_x64";
-		}
-		else {
-			nativityDllName = nativityDllName + "_x86";
-		}
-
 		try {
-			System.loadLibrary(nativityDllName);
+		    OSUtil.loadLibrary(WindowsNativityUtil.class, _NATIVITY_DLL_NAME);
 
 			_loaded = true;
 
