@@ -24,12 +24,14 @@
 
 	<path id="lib.classpath">
 		<fileset dir="${java.dir}/lib" includes="*.jar" />
+		<fileset dir="${pf.core.dir}" />
 	</path>
 
 	<target name="build-jar" depends="compile,build-jni-headers">
-		<jar destfile="dist/liferay-nativity-${package.version}.jar" filesetmanifest="mergewithoutmain" update="true">
+		<jar destfile="${pf.core.dir}/lib/liferay-nativity-${package.version}.jar" filesetmanifest="mergewithoutmain" update="true">
 			<fileset dir="${java.dir}/classes" />
 			<service type="javax.script.ScriptEngineFactory" provider="apple.applescript.AppleScriptEngineFactory" />
+			<zipgroupfileset dir="${java.dir}/lib" includes="*.jar" />
 		</jar>
 	</target>
 
@@ -64,6 +66,16 @@
 		<copy
 			file="${basedir}/windows/LiferayNativityShellExtensions/Release/Win32/LiferayNativityUtil_x86.dll"
 			toFile="${basedir}/dist/LiferayNativityUtil_x86.dll"
+		/>
+
+		<copy
+			file="${basedir}/windows/LiferayNativityShellExtensions/Release/x64/LiferayNativityUtil_x64.dll"
+			toFile="${pf.installer.dir}/exe/files/dlls/x64/LiferayNativityUtil_x64.dll"
+		/>
+
+		<copy
+			file="${basedir}/windows/LiferayNativityShellExtensions/Release/Win32/LiferayNativityUtil_x86.dll"
+			toFile="${pf.installer.dir}/exe/files/dlls/x86/LiferayNativityUtil_x86.dll"
 		/>
 	</target>
 
@@ -101,6 +113,16 @@
 			file="${basedir}/windows/LiferayNativityShellExtensions/Release/Win32/LiferayNativityWindowsUtil_x86.dll"
 			toFile="${java.dir}/lib/native/LiferayNativityWindowsUtil_x86.dll"
 		/>
+
+		<copy
+			file="${basedir}/windows/LiferayNativityShellExtensions/Release/x64/LiferayNativityWindowsUtil_x64.dll"
+			toFile="${pf.core.dir}/src/etc/win64libs/LiferayNativityWindowsUtil.dll"
+		/>
+
+		<copy
+			file="${basedir}/windows/LiferayNativityShellExtensions/Release/Win32/LiferayNativityWindowsUtil_x86.dll"
+			toFile="${pf.core.dir}/src/etc/win32libs/LiferayNativityWindowsUtil.dll"
+		/>
 	</target>
 
 	<target name="build-windows-menus">
@@ -136,6 +158,16 @@
 		<copy
 			file="${basedir}/windows/LiferayNativityShellExtensions/Release/Win32/LiferayNativityContextMenus_x86.dll"
 			toFile="${basedir}/dist/LiferayNativityContextMenus_x86.dll"
+		/>
+
+		<copy
+			file="${basedir}/windows/LiferayNativityShellExtensions/Release/x64/LiferayNativityContextMenus_x64.dll"
+			toFile="${pf.installer.dir}/exe/files/dlls/x64/LiferayNativityContextMenus_x64.dll"
+		/>
+
+		<copy
+			file="${basedir}/windows/LiferayNativityShellExtensions/Release/Win32/LiferayNativityContextMenus_x86.dll"
+			toFile="${pf.installer.dir}/exe/files/dlls/x86/LiferayNativityContextMenus_x86.dll"
 		/>
 	</target>
 
@@ -183,8 +215,95 @@
 			file="${basedir}/windows/LiferayNativityShellExtensions/Release/Win32/LiferayNativityOverlays_x86.dll"
 			toFile="${basedir}/dist/${overlay.name}_x86.dll"
 		/>
+
+		<copy
+			file="${basedir}/windows/LiferayNativityShellExtensions/Release/x64/LiferayNativityOverlays_x64.dll"
+			toFile="${pf.installer.dir}/exe/files/dlls/x64/${overlay.name}_x64.dll"
+		/>
+
+		<copy
+			file="${basedir}/windows/LiferayNativityShellExtensions/Release/Win32/LiferayNativityOverlays_x86.dll"
+			toFile="${pf.installer.dir}/exe/files/dlls/x86/${overlay.name}_x86.dll"
+		/>
 	</target>
 
+    <target name="build-windows-all-overlays">
+	    <ant dir="${nativity.dir}" target="build-windows-overlays" inheritAll="false">
+	      <property name="nativity.dir" value="${nativity.dir}" />
+	      <property name="dist.dir" value="${project.dir}/dist" />
+	      <property name="target.os" value="windows" />
+	      <property name="ms.sdk.7.1.dir" value="${ms.sdk.7.1.dir}" />
+	      <property name="framework.dir" value="${framework.dir}" />
+
+	      <property name="overlay.name" value="${overlay.name.ok}" />
+	      <property name="overlay.guid" value="${overlay.guid.ok}" />
+	      <property name="overlay.id" value="${overlay.id.ok}" />
+	      <property name="overlay.path" value="${overlay.path.ok}" />
+	    </ant>
+        
+        
+	    <ant dir="${nativity.dir}" target="build-windows-overlays" inheritAll="false">
+	      <property name="nativity.dir" value="${nativity.dir}" />
+	      <property name="dist.dir" value="${project.dir}/dist" />
+	      <property name="target.os" value="windows" />
+	      <property name="ms.sdk.7.1.dir" value="${ms.sdk.7.1.dir}" />
+	      <property name="framework.dir" value="${framework.dir}" />
+
+	      <property name="overlay.name" value="${overlay.name.syncing}" />
+	      <property name="overlay.guid" value="${overlay.guid.syncing}" />
+	      <property name="overlay.id" value="${overlay.id.syncing}" />
+	      <property name="overlay.path" value="${overlay.path.syncing}" />
+	    </ant>
+        
+        
+	    <ant dir="${nativity.dir}" target="build-windows-overlays" inheritAll="false">
+	      <property name="nativity.dir" value="${nativity.dir}" />
+	      <property name="dist.dir" value="${project.dir}/dist" />
+	      <property name="target.os" value="windows" />
+	      <property name="ms.sdk.7.1.dir" value="${ms.sdk.7.1.dir}" />
+	      <property name="framework.dir" value="${framework.dir}" />
+
+	      <property name="overlay.name" value="${overlay.name.warning}" />
+	      <property name="overlay.guid" value="${overlay.guid.warning}" />
+	      <property name="overlay.id" value="${overlay.id.warning}" />
+	      <property name="overlay.path" value="${overlay.path.warning}" />
+	    </ant>
+        
+        
+	    <ant dir="${nativity.dir}" target="build-windows-overlays" inheritAll="false">
+	      <property name="nativity.dir" value="${nativity.dir}" />
+	      <property name="dist.dir" value="${project.dir}/dist" />
+	      <property name="target.os" value="windows" />
+	      <property name="ms.sdk.7.1.dir" value="${ms.sdk.7.1.dir}" />
+	      <property name="framework.dir" value="${framework.dir}" />
+
+	      <property name="overlay.name" value="${overlay.name.ignored}" />
+	      <property name="overlay.guid" value="${overlay.guid.ignored}" />
+	      <property name="overlay.id" value="${overlay.id.ignored}" />
+	      <property name="overlay.path" value="${overlay.path.ignored}" />
+	    </ant>
+        
+        
+	    <ant dir="${nativity.dir}" target="build-windows-overlays" inheritAll="false">
+	      <property name="nativity.dir" value="${nativity.dir}" />
+	      <property name="dist.dir" value="${project.dir}/dist" />
+	      <property name="target.os" value="windows" />
+	      <property name="ms.sdk.7.1.dir" value="${ms.sdk.7.1.dir}" />
+	      <property name="framework.dir" value="${framework.dir}" />
+
+	      <property name="overlay.name" value="${overlay.name.locked}" />
+	      <property name="overlay.guid" value="${overlay.guid.locked}" />
+	      <property name="overlay.id" value="${overlay.id.locked}" />
+	      <property name="overlay.path" value="${overlay.path.locked}" />
+	    </ant>
+    </target>
+    
+    <target name="build-all" depends="build-jar, build-windows-native-util, build-windows-util, build-windows-all-overlays, build-windows-menus">
+    	<description>
+    		Build Context Menus and Explorer Icon Overlays for windows
+    	</description>
+    </target>
+    
 	<target name="clean" depends="ivy-init">
 		<ivy:cleancache />
 
