@@ -26,7 +26,7 @@ HRESULT NativityOverlayRegistrationHandler::MakeRegistryEntries(const CLSID& cls
 
 	if (FAILED(hResult))
 	{
-		hResult = RegCreateKey(HKEY_LOCAL_MACHINE, REGISTRY_OVERLAY_KEY, &shellOverlayKey);
+		hResult = HRESULT_FROM_WIN32(RegCreateKey(HKEY_LOCAL_MACHINE, REGISTRY_OVERLAY_KEY, &shellOverlayKey));
 
 		if (FAILED(hResult))
 		{
@@ -49,7 +49,7 @@ HRESULT NativityOverlayRegistrationHandler::MakeRegistryEntries(const CLSID& cls
 
 	LPCTSTR value = stringCLSID;
 
-	hResult = RegSetValueEx(syncExOverlayKey, NULL, 0, REG_SZ, (LPBYTE)value, (DWORD)((wcslen(value) + 1) * sizeof(TCHAR)));
+	hResult = HRESULT_FROM_WIN32(RegSetValueEx(syncExOverlayKey, NULL, 0, REG_SZ, (LPBYTE)value, (DWORD)((wcslen(value) + 1) * sizeof(TCHAR))));
 
 	if (FAILED(hResult))
 	{
